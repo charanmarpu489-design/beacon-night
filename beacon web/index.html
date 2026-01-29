@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <!-- Primary Meta Tags -->
+    <title>Beacon Night | Night Food Radar</title>
+    <meta name="title" content="Beacon Night | Night Food Radar">
+    <meta name="description"
+        content="Discover open restaurants, dhabas, and cafes late at night. Real-time table availability and navigation for night travelers across India.">
+    <meta name="keywords"
+        content="night food, late night restaurants, 24/7 food, highway dhaba, food near me, night cafe, India food map">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://beaconnight.com/">
+    <meta property="og:title" content="Beacon Night | Night Food Radar">
+    <meta property="og:description"
+        content="Find the best late-night food spots across India with real-time status updates and navigation with Beacon Night.">
+    <meta property="og:image" content="assets/social-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://beaconnight.com/">
+    <meta property="twitter:title" content="Beacon Night | Night Food Radar">
+    <meta property="twitter:description"
+        content="Find the best late-night food spots across India with real-time status updates and navigation with Beacon Night.">
+    <meta property="twitter:image" content="assets/social-preview.png">
+
+    <!-- Fonts: Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Icons: Remix Icon (Modern, clean) -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Beacon Night",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "description": "A real-time map application to find open food spots, hotels, and dhabas during the night across India."
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="radar-pulse"></div>
+        <h1 class="logo-text">Beacon Night</h1>
+        <p class="status-text" id="loading-text">Initializing satellite link...</p>
+    </div>
+
+    <!-- Main App Interface -->
+    <div id="app-container" class="app-container hidden">
+
+        <!-- Map Background -->
+        <div id="map" class="map-view"></div>
+
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="search-bar">
+                <i class="ri-search-2-line search-icon"></i>
+                <input type="text" placeholder="Search highway, city..." id="search-input">
+                <button id="locate-btn" class="locate-btn"><i class="ri-crosshair-2-line"></i></button>
+            </div>
+            <button class="profile-btn">
+                <i class="ri-user-3-line"></i>
+            </button>
+        </header>
+
+        <!-- Emergency Mode Button -->
+        <button id="emergency-btn" class="emergency-btn">
+            <i class="ri-alarm-warning-line"></i>
+        </button>
+
+        <!-- Filter Chips (Horizontal Scroll) -->
+        <div class="filter-chips">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="highly-rated">Top Rated</button>
+            <button class="chip" data-filter="24-7">24/7 Open</button>
+            <button class="chip" data-filter="less-crowded">Less Crowded</button>
+            <button class="chip" data-filter="truck-friendly">Truck Parking</button>
+            <button class="chip" data-filter="family">Family</button>
+            <button class="chip" data-filter="budget">Budget</button>
+        </div>
+
+        <!-- Location Stats Card -->
+        <div id="location-stats" class="location-stats-card">
+            <div class="stats-icon">
+                <i class="ri-map-pin-range-line"></i>
+            </div>
+            <div class="stats-info">
+                <div class="stats-count"><span id="places-count">0</span> spots found</div>
+                <div class="stats-distance">Within <span id="search-radius">50</span> km radius</div>
+            </div>
+            <div class="stats-breakdown">
+                <div class="stat-mini">
+                    <i class="ri-restaurant-2-fill" style="color: var(--color-primary);"></i>
+                    <span id="open-count">0</span> Open
+                </div>
+                <div class="stat-mini">
+                    <i class="ri-time-line" style="color: var(--color-warning);"></i>
+                    <span id="busy-count">0</span> Busy
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet (Details) -->
+        <div id="bottom-sheet" class="bottom-sheet">
+            <div class="sheet-handle"></div>
+
+            <!-- Default Content: Nearby Summary -->
+            <div id="sheet-summary" class="sheet-content">
+                <h2 class="sheet-title">Nearby Night Spots</h2>
+                <div id="nearby-list" class="nearby-list">
+                    <!-- Items injected by JS -->
+                </div>
+            </div>
+
+            <!-- Detail Content: Selected Restaurant -->
+            <div id="sheet-detail" class="sheet-content hidden">
+                <button id="back-to-list" class="back-link"><i class="ri-arrow-left-line"></i> Back</button>
+                <div class="detail-header">
+                    <h2 id="detail-name" class="detail-name">Highway King Dhaba</h2>
+                    <span id="detail-status" class="status-badge green">🟢 Open Now</span>
+                </div>
+
+                <div class="detail-stats">
+                    <div class="stat-item">
+                        <i class="ri-layout-grid-line"></i>
+                        <span id="detail-tables">4 Tables</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="ri-time-line"></i>
+                        <span id="detail-time">Until 4 AM</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="ri-money-rupee-circle-line"></i>
+                        <span id="detail-price">₹200/person</span>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="action-btn call-btn" id="call-btn">
+                        <i class="ri-phone-fill"></i> Call Now
+                    </button>
+                    <button class="action-btn nav-btn" id="nav-btn">
+                        <i class="ri-navigation-fill"></i> Navigate
+                    </button>
+                </div>
+
+                <div class="detail-tags" id="detail-tags">
+                    <!-- Tags injected here -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- App Logic -->
+    <script src="js/data.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

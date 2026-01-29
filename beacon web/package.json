@@ -1,0 +1,21 @@
+{
+  "name": "beacon-night-food",
+  "version": "1.0.0",
+  "description": "Real-time night food discovery engine",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "map",
+    "food",
+    "night",
+    "safety"
+  ],
+  "author": "Beacon Team",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
