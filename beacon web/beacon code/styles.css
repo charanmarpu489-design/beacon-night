@@ -1,0 +1,800 @@
+/* CSS Variables - The Nocturne Theme */
+:root {
+    --bg-void: #050505;
+    --bg-surface: #121212;
+    --bg-surface-elevated: #1E1E1E;
+
+    --color-primary: #00FF94;
+    /* Neon Mint */
+    --color-primary-dim: #008f53;
+    --color-warning: #FFC107;
+    /* Amber */
+    --color-danger: #FF3B30;
+    /* Red */
+    --color-danger-dim: #5C1D1D;
+
+    --text-main: #E0E0E0;
+    --text-secondary: #949494;
+
+    --font-main: 'Manrope', sans-serif;
+
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-void);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    font-size: 16px;
+    height: 100vh;
+    overflow: hidden;
+    /* Prevent scrolling body */
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-void);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.logo-text {
+    font-size: 2.5rem;
+    letter-spacing: -1px;
+    margin-top: 1rem;
+    background: linear-gradient(135deg, var(--text-main), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.status-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-family: monospace;
+}
+
+.radar-pulse {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    position: relative;
+    box-shadow: 0 0 0 0 rgba(0, 255, 148, 0.7);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 255, 148, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 20px rgba(0, 255, 148, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 255, 148, 0);
+    }
+}
+
+/* App Container */
+.app-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-container.hidden {
+    display: none;
+}
+
+/* Map */
+.map-view {
+    flex: 1;
+    background-color: #0a0a0a;
+    /* Fallback */
+    z-index: 0;
+}
+
+/* Top Bar */
+.top-bar {
+    position: absolute;
+    top: env(safe-area-inset-top, 20px);
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    pointer-events: none;
+    /* Let clicks pass through around items */
+}
+
+.search-bar {
+    flex: 1;
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    pointer-events: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.search-icon {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+#search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    width: 100%;
+    width: 100%;
+    outline: none;
+}
+
+.locate-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.locate-btn:active {
+    transform: scale(0.9);
+}
+
+.profile-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    pointer-events: auto;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Emergency Button */
+.emergency-btn {
+    position: absolute;
+    right: 20px;
+    top: 90px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--color-danger-dim);
+    color: var(--color-danger);
+    border: 2px solid var(--color-danger);
+    border-radius: 12px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.emergency-btn:active {
+    transform: scale(0.95);
+    background-color: var(--color-danger);
+    color: white;
+}
+
+/* Filter Chips */
+.filter-chips {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    width: calc(100% - 80px);
+    /* Space for emergency btn */
+    display: flex;
+    gap: 8px;
+    padding: 0 20px;
+    overflow-x: auto;
+    z-index: 90;
+    scrollbar-width: none;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+}
+
+.filter-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.chip {
+    background: rgba(30, 30, 30, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chip.active {
+    background: var(--color-primary-dim);
+    border-color: var(--color-primary);
+    color: var(--text-main);
+}
+
+/* Bottom Sheet */
+.bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-surface);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 10px 20px 30px 20px;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 110;
+    transform: translateY(0);
+    transition: transform 0.3s var(--ease-out);
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.sheet-handle {
+    width: 40px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin: 0 auto 20px auto;
+}
+
+.sheet-title {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: var(--text-main);
+}
+
+.nearby-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    background: var(--bg-surface-elevated);
+    padding: 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border 0.2s;
+}
+
+.list-item:active {
+    border-color: var(--color-primary);
+}
+
+.list-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: #333;
+}
+
+.list-info {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.list-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.list-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.list-phone {
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    /* Pop out a bit or stick to secondary? User wants 'owner number', implies utility. */
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.9;
+}
+
+.list-status {
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.list-status.green {
+    color: var(--color-primary);
+}
+
+.list-status.yellow {
+    color: var(--color-warning);
+}
+
+.list-status.red {
+    color: var(--color-danger);
+}
+
+/* Detail View */
+.sheet-content.hidden {
+    display: none;
+}
+
+.back-link {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.detail-name {
+    font-size: 1.4rem;
+    max-width: 70%;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(0, 255, 148, 0.1);
+    color: var(--color-primary);
+}
+
+.detail-stats {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.stat-item {
+    flex: 1;
+    background: var(--bg-surface-elevated);
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.stat-item i {
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.detail-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.action-btn {
+    flex: 1;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    font-family: var(--font-main);
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.call-btn {
+    background: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-main);
+}
+
+.nav-btn {
+    background: var(--color-primary);
+    color: black;
+}
+
+.detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.detail-tag {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    background: var(--bg-surface-elevated);
+    border-radius: 6px;
+}
+
+/* Custom Leaflet Marker Styles */
+.custom-pin {
+    background: none;
+    border: none;
+}
+
+.pin-inner {
+    width: 30px;
+    height: 30px;
+    background: var(--bg-surface);
+    border: 2px solid var(--color-primary);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.pin-inner i {
+    transform: rotate(45deg);
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.pin-glow {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 50px;
+    height: 50px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: pulse-pin 2s infinite;
+    z-index: -1;
+}
+
+@keyframes pulse-pin {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+.pin-inner.yellow {
+    border-color: var(--color-warning);
+}
+
+.pin-inner.red {
+    border-color: var(--color-danger);
+}
+
+.pin-inner.recommended {
+    border-color: #FFD700;
+    /* Gold */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.recommended-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #FFD700;
+    color: black;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    border: 2px solid var(--bg-surface);
+}
+
+.pin-glow.strong {
+    opacity: 0.6;
+    animation: pulse-pin 1.5s infinite;
+}
+
+.pin-glow.yellow {
+    background: var(--color-warning);
+}
+
+.pin-glow.red {
+    background: var(--color-danger);
+    animation: none;
+    opacity: 0.1;
+}
+
+/* User Location Marker */
+.user-pin {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-location-dot {
+    width: 14px;
+    height: 14px;
+    background-color: #00d2ff;
+    border: 3px solid white;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 15px #00d2ff, 0 0 30px rgba(0, 210, 255, 0.4);
+}
+
+.user-location-pulse {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 210, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: pulse-ring 2.5s infinite;
+    z-index: 1;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.4);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2.0);
+        opacity: 0;
+    }
+}
+
+/* Navigation Stats HUD */
+.nav-stats-card {
+    position: absolute;
+    top: 90px;
+    left: 20px;
+    right: 20px;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--color-primary);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.nav-stat-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.nav-stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-close-btn {
+    background: rgba(255, 59, 48, 0.1);
+    color: var(--color-danger);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Location Stats Card */
+.location-stats-card {
+    position: absolute;
+    top: 155px;
+    left: 20px;
+    right: 20px;
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 255, 148, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    z-index: 95;
+    animation: slide-down 0.4s ease-out;
+}
+
+.stats-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(0, 255, 148, 0.2), rgba(0, 255, 148, 0.05));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.stats-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stats-count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.stats-count span {
+    color: var(--color-primary);
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.stats-distance {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.stats-distance span {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.stats-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-mini {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.stat-mini i {
+    font-size: 1rem;
+}
+
+.stat-mini span {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Responsive adjustment */
+@media (max-width: 480px) {
+    .location-stats-card {
+        flex-wrap: wrap;
+        padding: 12px;
+    }
+
+    .stats-breakdown {
+        flex-direction: row;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-left: 0;
+        padding-top: 8px;
+        width: 100%;
+        justify-content: space-around;
+    }
+}
